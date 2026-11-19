@@ -4,6 +4,13 @@ Agent skills that keep a project from turning into slop: one home for every fact
 
 Each skill is a folder with a `SKILL.md` and, where needed, scripts, references and templates. They work with Claude Code and any agent that reads the Agent Skills format.
 
+## Presentation and resources
+
+| File | What it is |
+|---|---|
+| [**The future of AI is augmented** (PDF)](presentation/the-future-of-ai-is-augmented.pdf) | The talk behind this library: why unread AI output piles up and how a team keeps a person in charge. 20 slides. |
+| [**AI learning resources** (PDF)](resources/ai-learning-resources-overview.pdf) | Free courses, lectures and channels for learning AI and the maths behind it. For each one: who it is for, when to use it, what you get. |
+
 ## Start here
 
 Run `project-foundation` on a new project first. It asks a few questions and writes the operating rules. The other skills build on what it sets up.
@@ -17,6 +24,20 @@ Run `project-foundation` on a new project first. It asks a few questions and wri
 | [`doc-cleanup-index`](skills/doc-cleanup-index) | Cleans up a messy tree of docs: inventory, max 7 folders per level, safe moves, tags, navigation index | a workspace has grown without rules |
 | [`overview-brief`](skills/overview-brief) | Builds one overview document of a company or project for a reader with no context | onboarding a person, partner or new session |
 | [`skill-gate`](skills/skill-gate) | Makes sure a skill named in a prompt is invoked before code is written, and files are read before they are edited | agents skip the skills they were told to use |
+
+## Collected skills
+
+Seven skills by other authors that fight the same problem, copied unchanged into [`third-party/`](third-party) with each author's licence. Author, source and licence for every skill: [SOURCES.md](SOURCES.md).
+
+| Skill | What it removes |
+|---|---|
+| `unslop` | AI-looking user interfaces |
+| `narrative-deslop` | AI habits in stories and scripts |
+| `install-anti-slop` | sloppy TypeScript and JavaScript, through a lint plugin |
+| `zero-tech-debt` | compatibility cruft and accidental complexity |
+| `verification-before-completion` | "done" claims with no proof |
+| `grill-me` | vague plans |
+| `the-fool` | untested ideas |
 
 ## Install
 
