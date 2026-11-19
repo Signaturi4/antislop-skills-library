@@ -1,0 +1,8 @@
+{
+  "skill_name": "overview-brief",
+  "evals": [
+    {"id": 1, "prompt": "we have a new cofounder joining northwind next week, she has zero context. read the files in evals/files/northwind and make one overview page of the company - why we exist, team, numbers, go to market, infra, how we work, first steps. html page + a .md copy", "expected_output": "Co-founder brief with sectioned claim headlines, sourced numbers, people as roles, infra without server names or IPs, open seat named, HTML + Markdown", "files": ["evals/files/northwind"]},
+    {"id": 2, "prompt": "make an investor overview of northwind labs from evals/files/northwind, one page, nothing confidential in it (no clinic names, no internals)", "expected_output": "Investor-tier brief: no clinic names, no hostnames/IPs/model details, numbers from the finance sheet only", "files": ["evals/files/northwind"]},
+    {"id": 3, "prompt": "update the northwind overview: we now have 6 paying clinics and margin is 68% (finance sheet 2026-11-30). keep the same file, tell me what changed", "expected_output": "Only economics section values change, same path, short changelog", "files": ["evals/files/northwind"]}
+  ]
+}

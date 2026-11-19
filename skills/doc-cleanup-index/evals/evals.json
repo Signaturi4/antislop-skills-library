@@ -1,0 +1,26 @@
+{
+ "skill_name": "doc-cleanup-index",
+ "evals": [
+  {"id": 1, "name": "extract-toward-root",
+   "prompt": "clean up inside the repos, pull out the content, separate documentation (unless purely technical to code it stays together). extract docs towards root, not other way around",
+   "expected_output": "Non-technical doc inside a repo is planned and moved up out of the repo (copy, verify, Trash, git rm --cached); the technical API doc stays; a downward move is refused; links in the moved doc are rewritten.",
+   "files": ["evals/make_fixture.sh"],
+   "assertions": ["plan moves the marketing doc out of the repo", "plan keeps the technical api doc in the repo", "move refuses a move into the repo / deeper",
+                  "source is in the Trash and staged as deleted in git", "relative link in the moved doc still resolves"]},
+  {"id": 2, "name": "tags-allow-list",
+   "prompt": "i want each doc to get tags, 1 to 3 per project, 1 to 3 per role and 1 to 3 per subject, can include sub-subject, a currated list of allowed, in case nothing fits it should add to the allow list a new one and use it",
+   "expected_output": "Every doc has 1-3 tags per facet; the off-topic doc triggers one new subject tag appended to tag_pool.json with added and reason, and that doc uses it.",
+   "files": ["evals/make_fixture.sh"],
+   "assertions": ["every doc has 1-3 tags in each of project, role, subject", "a sub-subject tag (with /) is used", "a new tag is added with added+reason and used by the off-topic doc", ".env is never indexed"]},
+  {"id": 3, "name": "links-graph-index",
+   "prompt": "make a scan of all the links, graph DB with notes as nodes and the tags as the relationships, a high quality index to navigate, include html and pdf not only .md",
+   "expected_output": "broken-links report lists the missing link; graph.db has one doc node per indexed doc incl. html and pdf, has_* and links_to edges; NAVIGATION.md groups project -> subject.",
+   "files": ["evals/make_fixture.sh"],
+   "assertions": ["broken link report names missing.md", "html and pdf docs are in the inventory and graph", "graph has has_project/has_role/has_subject and links_to edges", "NAVIGATION.md has project and project/subject headings"]},
+  {"id": 4, "name": "seven-per-level",
+   "prompt": "up to 7 folders in the one parent folder, keep it as a rule, check or create index for the whole repo",
+   "expected_output": "check_structure fails on the 8+ folder level and writes INDEX.md.",
+   "files": ["evals/make_fixture.sh"],
+   "assertions": ["check fails with exit 1 naming the root level", "INDEX.md is written"]}
+ ]
+}

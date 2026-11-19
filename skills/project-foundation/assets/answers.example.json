@@ -1,0 +1,41 @@
+{
+  "name": "Example Studio",
+  "kind": "workspace",
+  "owner_role": "owner",
+  "max_folders": 7,
+  "governance_dir": "1-company/governance",
+  "folders": [
+    {"name": "1-company", "desc": "who we are: concept, clients, brand, how the project runs"},
+    {"name": "2-sales-marketing", "desc": "offers, proposals, competition, content"},
+    {"name": "3-projects", "desc": "side and client project work outside the main repos"},
+    {"name": "4-repos", "desc": "working git repos; each keeps its own layout"},
+    {"name": "5-research", "desc": "research outputs and reading"},
+    {"name": "6-media", "desc": "video, images, motion"},
+    {"name": "7-archive", "desc": "move logs, backups, items waiting for deletion"}
+  ],
+  "roles": [
+    {"role": "owner", "who": "founder", "owns": "strategy, architecture, clients, money", "decides": "merge, deploy, spend, publish, scope", "does_not": "day-to-day build work"},
+    {"role": "developer", "who": "one person", "owns": "code, tests, technical docs", "decides": "how a task is built", "does_not": "merge to main without the owner's yes"},
+    {"role": "designer", "who": "one person", "owns": "screens, flows, visual quality", "decides": "design details inside an agreed flow", "does_not": "billing or client reports"},
+    {"role": "sales", "who": "one person", "owns": "proposals and first contact", "decides": "wording of a draft", "does_not": "send anything without the owner's yes"}
+  ],
+  "decision_rights": [
+    {"action": "merge to main", "decides": "owner", "consulted": "developer", "agent_may": "open a pull request, then stop"},
+    {"action": "deploy to production", "decides": "owner", "consulted": "developer", "agent_may": "deploy to the test stage only"},
+    {"action": "spend money", "decides": "owner", "agent_may": "show the cost, then stop"},
+    {"action": "publish or send outside", "decides": "owner", "consulted": "sales", "agent_may": "write the draft, then stop"}
+  ],
+  "sources": [
+    {"topic": "task status, owner, due date", "home": "task board", "kind": "external", "location": "the team's board (name the tool and the board)", "owner": "owner", "read_via": "board connector", "wins_over": "git history, chat, daily notes"},
+    {"topic": "code and technical docs", "home": "git repository", "kind": "internal", "location": "4-repos/<repo>", "owner": "developer", "read_via": "files, pull requests", "wins_over": "copies in documents and chats"},
+    {"topic": "decisions", "home": "decision register", "kind": "internal", "location": "1-company/governance/decision-register.md", "owner": "owner", "read_via": "file", "wins_over": "chat, meeting notes, memory"},
+    {"topic": "roles and who decides", "home": "roles file", "kind": "internal", "location": "1-company/governance/roles.md", "owner": "owner", "read_via": "file", "wins_over": "org charts in slides"},
+    {"topic": "client data", "home": "the client's CRM", "kind": "external", "location": "client system", "owner": "client", "read_via": "CRM connector, read only", "wins_over": "exports and spreadsheets"},
+    {"topic": "prices and invoices", "home": "", "kind": "", "location": "", "owner": "owner"}
+  ],
+  "decisions": [
+    {"decision": "The task board is the home for task status; git is the home for code and docs", "decided_by": "owner", "why": "a status report built from git alone was out of date"}
+  ],
+  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task"],
+  "open_questions": ["Which tool holds prices and invoices?"]
+}

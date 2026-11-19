@@ -1,0 +1,125 @@
+{
+ "project": {
+  "general": {
+   "desc": "not about one project: company-wide or generic"
+  }
+ },
+ "role": {
+  "anyone": {
+   "desc": "general audience, no specific role"
+  },
+  "founder": {
+   "desc": "owner or leadership: goals, strategy, decisions"
+  },
+  "sales": {
+   "desc": "sells: leads, proposals, offers, outreach"
+  },
+  "marketer": {
+   "desc": "marketing, brand, content, social"
+  },
+  "designer": {
+   "desc": "UX/UI, visual design, design QA"
+  },
+  "developer": {
+   "desc": "writes code: frontend, backend, scripts"
+  },
+  "devops": {
+   "desc": "servers, deploy, CI, monitoring, security"
+  },
+  "data-scientist": {
+   "desc": "data analysis, ML models, evaluation"
+  },
+  "researcher": {
+   "desc": "customer or market research, studies, personas"
+  },
+  "project-manager": {
+   "desc": "planning, tasks, status, delivery, coordination"
+  },
+  "client": {
+   "desc": "written for a client or prospect to read"
+  },
+  "new-joiner": {
+   "desc": "onboarding, setup, how things work"
+  },
+  "ai-agent": {
+   "desc": "instructions written for an AI agent: prompts, skills"
+  }
+ },
+ "subject": {
+  "strategy": {
+   "desc": "business strategy, goals, positioning, decisions"
+  },
+  "strategy/pricing": {
+   "desc": "prices, packages, rates"
+  },
+  "sales": {
+   "desc": "sales process and material"
+  },
+  "sales/proposals": {
+   "desc": "proposals, offers, pitches, SOWs"
+  },
+  "sales/leads": {
+   "desc": "lead lists, targeting, ICP"
+  },
+  "marketing": {
+   "desc": "marketing in general"
+  },
+  "marketing/content": {
+   "desc": "posts, articles, social content"
+  },
+  "marketing/brand": {
+   "desc": "brand identity, logo, voice"
+  },
+  "marketing/competitors": {
+   "desc": "competitor analysis"
+  },
+  "research": {
+   "desc": "research in general"
+  },
+  "research/personas": {
+   "desc": "personas, ICP, customer segments"
+  },
+  "research/findings": {
+   "desc": "research results and insights"
+  },
+  "research/methods": {
+   "desc": "research plans, codebooks, methods"
+  },
+  "design": {
+   "desc": "UX and UI design"
+  },
+  "design/system": {
+   "desc": "design system, tokens, components"
+  },
+  "frontend": {
+   "desc": "frontend web or mobile code"
+  },
+  "backend-api": {
+   "desc": "backend services, APIs, databases, integrations"
+  },
+  "backend-api/reference": {
+   "desc": "API reference documentation"
+  },
+  "data-ml": {
+   "desc": "data science, ML, classifiers, recommendation"
+  },
+  "ai-agents": {
+   "desc": "LLM agents, prompts, MCP, skills, AI automation"
+  },
+  "infra-devops": {
+   "desc": "servers, deploy, CI, security, monitoring"
+  },
+  "qa-testing": {
+   "desc": "testing, QA, evals"
+  },
+  "operations": {
+   "desc": "process, team, tooling, project management"
+  },
+  "operations/finance": {
+   "desc": "invoices, budget, costs"
+  },
+  "docs-meta": {
+   "desc": "documentation rules, templates, indexes"
+  }
+ }
+}

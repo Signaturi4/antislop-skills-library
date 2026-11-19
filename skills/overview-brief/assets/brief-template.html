@@ -1,0 +1,122 @@
+<title>{{Name}} Brief</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Template: replace the token VALUES with the project's design system (fonts, accent ramp, canvas). Keep the names.
+   Long read with a sticky section rail on wide screens; chapters as cards; data as tables, ladders and one diagram. */
+:root{
+  --canvas:#e9f2eb;--paper:#ffffff;--ink:#0d0d0d;--muted:#555555;--line:#cdebd3;--rule:#e5e5e5;
+  --green:#26913b;--green-deep:#137333;--green-soft:#e1f1e4;--amber:#a34b07;--magenta:#86288f;
+  --display:"Poppins",system-ui,sans-serif;--text:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--canvas:#040705;--paper:#0f1611;--ink:#f2f2f2;--muted:#a3ada6;--line:#1f3a26;--rule:#243028;--green:#57d464;--green-deep:#8fd19c;--green-soft:#13261a;--amber:#ffa029;--magenta:#dc8ae5;color-scheme:dark}}
+:root[data-theme="dark"]{--canvas:#040705;--paper:#0f1611;--ink:#f2f2f2;--muted:#a3ada6;--line:#1f3a26;--rule:#243028;--green:#57d464;--green-deep:#8fd19c;--green-soft:#13261a;--amber:#ffa029;--magenta:#dc8ae5;color-scheme:dark}
+body{background:var(--canvas);color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.6}
+.shell{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;padding-block:32px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;display:grid;gap:2px;font-size:14px}
+nav.rail a{color:var(--muted);text-decoration:none;padding:5px 10px;border-left:2px solid var(--rule)}
+nav.rail a:hover,nav.rail a:focus-visible{color:var(--green-deep);border-left-color:var(--green)}
+nav.rail .k{font-family:var(--display);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--green-deep);padding:0 10px 8px}
+main{min-width:0;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+.hero{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:40px 36px}
+.eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-deep);font-weight:600}
+.hero h1{font-size:clamp(32px,5vw,50px);margin-top:10px;max-width:16ch}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p.lead{font-size:19px;max-width:60ch;margin:18px 0 0}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px;background:var(--green-soft);color:var(--green-deep)}
+section.ch{background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:30px 32px;scroll-margin-top:20px}
+section.ch>h2{font-size:26px;margin-top:6px}
+section.ch>p.intro{color:var(--muted);max-width:66ch;margin:8px 0 18px;font-size:17px}
+p,li{max-width:70ch}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.grid3>div,.grid2>div{min-width:0}
+.card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--canvas)}
+.card h3{font-size:16px;margin-bottom:6px}
+.card p{margin:0;font-size:15px}
+.num{font-family:var(--display);font-size:13px;color:var(--green-deep);font-weight:600}
+.ladder{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ladder div{padding:16px;border-right:1px solid var(--line);min-width:0}
+.ladder div:last-child{border-right:0}
+.ladder div:nth-child(1){background:var(--green-soft)}
+.ladder div:nth-child(3){background:var(--green);color:var(--paper)}
+.ladder b{font-family:var(--display);display:block;font-size:17px}
+.ladder span{font-size:14px}
+blockquote{margin:18px 0;padding:6px 0 6px 18px;border-left:3px solid var(--green);font-family:var(--display);font-size:20px;line-height:1.35;max-width:40ch}
+.tbl{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.status{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.live{background:var(--green-soft);color:var(--green-deep)}
+.wait{color:var(--amber);border:1px solid var(--amber)}
+.ro{color:var(--magenta);border:1px solid var(--magenta)}
+.funnel{display:grid;gap:7px;margin:12px 0}
+.fb{display:grid;grid-template-columns:110px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:14px}
+.fb i{display:block;height:16px;border-radius:4px;background:var(--green)}
+.fb .v{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.src{font-size:13px;color:var(--muted);margin-top:12px}
+.diagram{overflow-x:auto;margin-top:12px}
+.diagram svg{display:block;min-width:640px;width:100%;height:auto}
+.diagram text{font-family:var(--text);font-size:13px;fill:var(--ink)}
+.diagram .t{font-family:var(--display);font-weight:600;font-size:14px}
+.diagram .m{fill:var(--muted);font-size:12px}
+.diagram rect{fill:var(--canvas);stroke:var(--line);stroke-width:1.5}
+.diagram rect.hot{fill:var(--green-soft);stroke:var(--green)}
+.diagram rect.prod{fill:var(--paper);stroke:var(--magenta)}
+.diagram line,.diagram path{stroke:var(--green);stroke-width:1.5;fill:none}
+ol.steps{padding-left:20px}
+ol.steps li{margin:6px 0}
+a{color:var(--green-deep)}
+a:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+@media (max-width:860px){.shell{grid-template-columns:1fr}nav.rail{display:none}}
+@media (max-width:560px){.hero,section.ch{padding:22px 18px}.ladder{grid-template-columns:1fr}.ladder div{border-right:0;border-bottom:1px solid var(--line)}}
+</style>
+
+
+<div class="shell">
+<nav class="rail" aria-label="Sections">
+  <div class="k">{{Name}} brief</div>
+  <a href="#why">1 · Why we exist</a>
+  <!-- one link per section kept -->
+</nav>
+<main>
+<header class="hero">
+  <div class="eyebrow">{{Org}} · {{audience}} · {{Month YYYY}}</div>
+  <h1>{{The belief in one sentence, with one <em>key word</em>}}</h1>
+  <p class="lead">{{Who this is for and what it covers, two sentences.}}</p>
+  <div class="facts"><span class="chip">{{value 1}}</span><span class="chip">{{value 2}}</span></div>
+</header>
+
+<section class="ch" id="why">
+  <div class="eyebrow">1 · Why we exist</div>
+  <h2>{{Claim headline as a sentence}}</h2>
+  <p class="intro">From {{source}}. {{One-sentence framing.}}</p>
+  <div class="grid3">
+    <div class="card"><div class="num">{{label}}</div><h3>{{title}}</h3><p>{{text}}</p></div>
+  </div>
+  <div class="ladder" style="margin-top:18px"><div><b>{{stage}}</b><span>{{text}}</span></div><div><b>{{stage}}</b><span>{{text}}</span></div><div><b>{{stage}}</b><span>{{text}}</span></div></div>
+  <blockquote>{{verbatim pull quote}}</blockquote>
+  <p class="src">Source: {{source, date}}</p>
+</section>
+
+<section class="ch" id="economics">
+  <div class="eyebrow">6 · Unit economics</div>
+  <h2>{{Claim headline}}</h2>
+  <div class="funnel"><div class="fb"><span>{{stage}}</span><i style="width:100%"></i><span class="v">{{n}}</span></div></div>
+  <div class="tbl"><table><thead><tr><th>{{col}}</th><th>{{col}}</th></tr></thead><tbody><tr><td>{{x}}</td><td class="n">{{n}}</td></tr></tbody></table></div>
+  <p class="src">Sources: {{source, date}}</p>
+</section>
+
+<section class="ch" id="infra">
+  <div class="eyebrow">8 · Infra and DevOps</div>
+  <h2>{{Claim headline}}</h2>
+  <div class="diagram" role="img" aria-label="{{what the diagram shows}}"><svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg"><!-- rect / rect.hot / rect.prod, text.t / text.m, line --></svg></div>
+  <div class="tbl"><table><tbody><tr><td><b>{{piece}}</b></td><td>{{what it does}}</td><td><span class="status live">running</span> <span class="status wait">waiting</span> <span class="status ro">read-only</span></td></tr></tbody></table></div>
+  <p class="src">{{change path, sources}}</p>
+</section>
+</main>
+</div>

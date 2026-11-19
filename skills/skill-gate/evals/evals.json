@@ -1,0 +1,57 @@
+{
+  "skill_name": "skill-gate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "apply skill :: skill using-superpowers — Use when starting any conversation",
+      "expected_output": "using-superpowers becomes required; an Edit is blocked until the Skill tool runs using-superpowers, then allowed.",
+      "files": [],
+      "expectations": [
+        "UserPromptSubmit injects a SKILL GATE reminder naming using-superpowers",
+        "PreToolUse on Edit exits 2 with SKILL GATE while using-superpowers is not invoked",
+        "After a PostToolUse Skill event for using-superpowers, the same Edit is allowed"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "use this skill create agents for each /subagent-driven-development",
+      "expected_output": "subagent-driven-development (named with a slash) becomes required and the Stop hook refuses to end the turn until it is invoked, once per turn.",
+      "files": [],
+      "expectations": [
+        "subagent-driven-development is recorded as required",
+        "Stop returns decision block while it is pending",
+        "Stop with stop_hook_active true does not block (no loop)"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "please run the tests and check the logs then pause",
+      "expected_output": "No skill is named, nothing is required, and an Edit of a file that was Read is allowed.",
+      "files": [],
+      "expectations": [
+        "No SKILL GATE context is injected",
+        "Edit after Read is allowed"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "(read gate) edit a file that was never Read, then one changed on disk after the Read",
+      "expected_output": "READ GATE blocks both cases; a fresh Read clears it.",
+      "files": [],
+      "expectations": [
+        "Edit without a Read exits 2 with READ GATE not been Read",
+        "Edit after the file changed on disk exits 2 with READ GATE changed on disk",
+        "Edit after a new Read is allowed"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "use the tdd skill for this, actually skip skills",
+      "expected_output": "'skip skills' clears the required list for the session, so edits are not gated.",
+      "files": [],
+      "expectations": [
+        "After a prompt containing 'skip skills', required is empty and Edit is allowed"
+      ]
+    }
+  ]
+}
