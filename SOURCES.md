@@ -24,6 +24,7 @@ Copied unchanged. Each folder keeps the author's licence text. Credit and thanks
 | `verification-before-completion` | "done" claims with no proof: run the check, then report | Jesse Vincent | https://github.com/obra/superpowers | MIT (`LICENSE.upstream.txt`) |
 | `grill-me` | vague plans: the agent questions you until the plan is clear | Matt Pocock | https://github.com/mattpocock/skills | MIT (`LICENSE.upstream.txt`) |
 | `the-fool` | untested ideas: devil's advocate, pre-mortem, red team | Jeffallan | https://github.com/Jeffallan/claude-skills | MIT (`LICENSE.upstream.txt`) |
+| `zero-tech-debt` | compatibility cruft and accidental complexity: rework a change as if the intended design existed from day one | Makisuo (earliest public copy found, 2026-05-15; the same text also appears in other repositories) | https://github.com/Makisuo/skills | MIT (`LICENSE.upstream.txt`) |
 
 ## Built into Claude Code (not copied here)
 
