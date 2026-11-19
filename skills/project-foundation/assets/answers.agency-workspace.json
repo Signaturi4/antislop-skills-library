@@ -52,6 +52,6 @@
     {"decision": "Heavy jobs and CI run on the build server, never on a laptop", "decided_by": "owner", "why": "laptops ran out of memory", "reopen_when": "the build server is down for more than a day"},
     {"decision": "Boosted listings on the marketplace: how many and what budget", "status": "open", "decided_by": "owner", "why": "the ads budget is not set", "reopen_when": "n/a"}
   ],
-  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task", "three-lanes", "real-checkpoints", "authorship", "autonomy-levels", "conductor", "session-naming", "ci-off-laptop", "token-budget"],
+  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "skills-per-task", "three-lanes", "real-checkpoints", "authorship", "autonomy-levels", "conductor", "session-naming", "ci-off-laptop"],
   "open_questions": ["Which tool holds prices and invoices?"]
 }

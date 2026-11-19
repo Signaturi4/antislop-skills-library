@@ -9,7 +9,6 @@ What it writes (existing files are never overwritten, except the marked block in
   <governance_dir>/decision-register.md  decisions with id, date, who, why, when to reopen
   <governance_dir>/roles.md              roles, what each owns, who decides what
   <governance_dir>/owner-inputs.md       what agents and people are waiting for
-  <governance_dir>/handoff-template.md   hand-over note for each change (module "one-task-one-change")
   CLAUDE.md                              short rule block between markers (replaced on re-run);
                                          lines that only repeat what Claude Code does by itself are left out
   AGENTS.md                              the block with the full wording, only when the file already exists
@@ -39,7 +38,7 @@ MODULES = {
         "Nothing new at the root. After adding or moving a folder run `python3 .claude/check-structure.py --write`.",
     ],
     "safe-removal": [
-        "Moving: copy, verify the copy, then remove the source. Removal goes to the Trash, never a permanent delete.",
+        "Moving: copy, verify the copy, then remove the source. Removal goes to the Trash, not a permanent delete, unless the user asks for a permanent delete of that specific thing.",
         "Before removing a git clone check for unpushed commits, stashes and uncommitted changes.",
     ],
     "docs-toward-root": [
@@ -54,15 +53,9 @@ MODULES = {
     "confirm-outward": [
         "Ask before anything hard to undo or visible outside the project: merge, deploy, publish, send, pay, delete, change access. A yes covers that one action only.",
     ],
-    "privacy": [
-        "No personal names, emails, client names or secrets in anything that leaves the project (public repos, issues a client can read, shared documents). Use roles.",
-    ],
     "stage-and-production": [
         "Work on the working branch and the test stage, never on the release branch or production. Every change request targets the working branch.",
         "Environments, the data each one holds and who may release are in `{gov}/roles.md`. Real data stays out of the test stage; production is read-only for agents.",
-    ],
-    "token-budget": [
-        "Do exactly what was asked. Read narrowly (search first, then only the lines needed). One check that proves the result. Short answers, result first.",
     ],
     "conductor": [
         "The main session plans, writes briefs and checks reports. Work that needs judgment goes to a worker agent, mechanical work to a cheaper one. Handle everything that is not the owner's decision.",
@@ -83,10 +76,6 @@ MODULES = {
     "spec-first": [
         "Before building anything larger than a small fix, write the spec: goal, plan, what is out of scope, open questions. A person reads it before work starts.",
     ],
-    "one-task-one-change": [
-        "One task is one change request (pull request or equivalent): code, design and docs for that task travel together. It names the task it closes and the decision ids it follows.",
-        "Every change request carries a hand-over note from `{gov}/handoff-template.md`: decided, skipped on purpose, still open, checked and not checked. An agent may write it; the author reads and stands behind it. No keys or personal data in it.",
-    ],
     "authorship": [
         "Every piece of work has one named author: a person who read it and can explain it without opening the file. Agent output with no such person is a draft, not a result.",
         "Before passing work on, answer three questions: did a person decide this or did the agent; is the decision written down; can the author explain it. A no on any of them means stop and fix that first.",
@@ -106,15 +95,12 @@ MODULES = {
 # An empty list means: nothing project-specific is left, write no line.
 CLAUDE_SHORT = {
     "confirm-outward": [],
-    "token-budget": [
-        "Read narrowly (search first, then only the lines needed). One check that proves the result. Short answers, result first.",
-    ],
     "conductor": [
         "Work that needs judgment goes to a worker agent, mechanical work to a cheaper one. The main session writes the briefs and checks every report.",
     ],
 }
 
-DEFAULT_MODULES = ["structure", "safe-removal", "file-naming", "confirm-outward", "privacy"]
+DEFAULT_MODULES = ["structure", "safe-removal", "file-naming", "confirm-outward"]
 
 DEFAULT_DECISION_RIGHTS = ["merge to main", "deploy to production", "spend money", "publish or send outside", "product scope", "grant or change access"]
 
@@ -334,9 +320,6 @@ What agents and people are waiting for. One row per decision, answer or manual s
         f"{gov}/roles.md": roles_md,
         f"{gov}/owner-inputs.md": inputs_md,
     }
-    if "one-task-one-change" in modules:
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "handoff.template.md"), encoding="utf-8") as f:
-            files[f"{gov}/handoff-template.md"] = f.read()
     structure = None
     if "structure" in modules:
         desc = {f["name"]: f.get("desc", "") for f in folders}

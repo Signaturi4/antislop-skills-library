@@ -71,7 +71,7 @@ What to notice:
 
 A morning brief reads the open rows and shows them as "agents waiting on you".
 
-**Modules on:** `structure`, `safe-removal`, `docs-toward-root`, `file-naming`, `task-two-homes`, `confirm-outward`, `privacy`, `skills-per-task`, `three-lanes`, `real-checkpoints`, `authorship`, `autonomy-levels`, `conductor`, `session-naming`, `ci-off-laptop`, `token-budget`.
+**Modules on:** `structure`, `safe-removal`, `docs-toward-root`, `file-naming`, `task-two-homes`, `confirm-outward`, `skills-per-task`, `three-lanes`, `real-checkpoints`, `authorship`, `autonomy-levels`, `conductor`, `session-naming`, `ci-off-laptop`.
 
 ## Example 2: client product with a test stage and production
 
@@ -133,4 +133,4 @@ Rules in `CLAUDE.md` cite these ids ("the sales system is on hold (D-004)"), so 
 
 **Where documents go.** This team files docs by phase of work (engage, research, design, execute, test) and keeps everything made for one change in one folder for that change, closed when the change ships. That is one team's habit, not a module; write it into `CLAUDE.md` by hand if the project wants it.
 
-**Modules on:** `file-naming`, `confirm-outward`, `privacy`, `stage-and-production`, `spec-first`, `one-task-one-change`, `authorship`, `three-lanes`, `real-checkpoints`, `autonomy-levels`, `skills-per-task`, `ci-off-laptop`.
+**Modules on:** `file-naming`, `confirm-outward`, `stage-and-production`, `spec-first`, `authorship`, `three-lanes`, `real-checkpoints`, `autonomy-levels`, `skills-per-task`, `ci-off-laptop`.

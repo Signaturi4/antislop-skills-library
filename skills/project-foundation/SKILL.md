@@ -87,7 +87,6 @@ When two people each hand work to an agent, text piles up that nobody read and t
 | `three-lanes` | a person holds every decision | each step is Auto, Propose or Human; the table goes into `roles.md` |
 | `real-checkpoints` | a yes that means something | an approval request shows a count, one real example and what looks off |
 | `spec-first` | shared understanding | goal, plan, out of scope and open questions, read by a person before building |
-| `one-task-one-change` | visible process, traceability | one task is one change request that names its task and decision ids and carries a hand-over note (`handoff-template.md`) |
 | `authorship` | an author | one named person per piece of work, and three questions before passing it on |
 | `autonomy-levels` | control over how far agents go | a level from 1 to 4 per agent role; level 2 by default, raised by a recorded decision |
 
@@ -112,13 +111,10 @@ For a product that is deployed, list the environments in the answers file under 
 | Module | In Claude Code already | What the project line still adds |
 |---|---|---|
 | `confirm-outward` | asks before hard-to-undo or outward actions, commits and pushes only when asked, a yes covers one action | nothing: no line in `CLAUDE.md`. Whose yes is needed comes from `roles.md` |
-| `token-budget` | does what was asked, no unrequested files or refactors | narrow reads, one proving check, short answers |
 | `conductor` | decides by itself when to hand work to a subagent | which kind of agent gets which kind of work |
-| `safe-removal` | looks at a target before deleting or overwriting | Trash instead of delete, copy and verify before removing the source |
-| `privacy` | keeps personal details out of requests to outside services | roles instead of names inside the project's own files, issues and shared documents |
+| `safe-removal` | looks at a target before deleting or overwriting | Trash instead of delete unless the user asks for a permanent delete; copy and verify before removing the source |
 | `skills-per-task` | uses an installed skill when the task fits it | check the library for skills that are not installed; name the skills used |
 | `three-lanes` | the Propose lane is its default for outward actions | the Auto and Human lanes, and "unsure means Propose" |
-| `one-task-one-change` | branches before committing on the default branch | one task per change, task and decision ids, the hand-over note |
 | `spec-first` | the opposite: it writes no planning documents unless asked | this line is what makes it write the spec |
 
 Not built in, always written when on: `structure`, `docs-toward-root`, `file-naming`, `task-two-homes`, `stage-and-production`, `real-checkpoints`, `authorship`, `autonomy-levels`, `session-naming`, `ci-off-laptop`. The four pointer lines (sources, decisions, roles, owner inputs) are always written: Claude Code cannot know them.

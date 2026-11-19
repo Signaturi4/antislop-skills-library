@@ -42,6 +42,6 @@
     {"agent": "stage", "works_for": "developer", "does": "puts a change on the test stage and runs the checks", "level": 3, "stops_for": "anything on production"},
     {"agent": "sales", "works_for": "sales", "does": "drafts proposals", "level": 2, "stops_for": "sending"}
   ],
-  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task", "three-lanes", "real-checkpoints", "spec-first", "one-task-one-change", "authorship", "autonomy-levels"],
+  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "skills-per-task", "three-lanes", "real-checkpoints", "spec-first", "authorship", "autonomy-levels"],
   "open_questions": ["Which tool holds prices and invoices?"]
 }

@@ -48,6 +48,6 @@
     {"decision": "Inherited template code is reference only: not fixed, not tested, not built on", "decided_by": "project lead", "why": "the new system replaces it part by part", "reopen_when": "a reference part is needed in production"},
     {"decision": "Who decides the score threshold per customer segment", "status": "open", "decided_by": "client and project lead", "why": "raised in review, affects acceptance", "reopen_when": "n/a"}
   ],
-  "modules": ["file-naming", "confirm-outward", "privacy", "stage-and-production", "spec-first", "one-task-one-change", "authorship", "three-lanes", "real-checkpoints", "autonomy-levels", "skills-per-task", "ci-off-laptop"],
+  "modules": ["file-naming", "confirm-outward", "stage-and-production", "spec-first", "authorship", "three-lanes", "real-checkpoints", "autonomy-levels", "skills-per-task", "ci-off-laptop"],
   "open_questions": ["When will the client give access to their sales system?"]
 }

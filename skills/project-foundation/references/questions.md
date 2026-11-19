@@ -53,21 +53,18 @@ Offer the list, with the default set preselected; the user removes what does not
 | Module | Rule in one line | Default |
 |---|---|---|
 | `structure` | max 7 folders per level, checker script, generated `INDEX.md` | on |
-| `safe-removal` | copy, verify, then Trash; never a permanent delete | on |
+| `safe-removal` | copy, verify, then Trash; permanent delete only when the user asks for it | on |
 | `file-naming` | what-who-when names, full dates, no `_v2` or `final` | on |
 | `confirm-outward` | ask before merge, deploy, publish, send, pay, delete (Claude Code does this by itself; the line is written to `AGENTS.md` only) | on |
 | `stage-and-production` | work on the working branch and the stage; production is the release role's | when the product is deployed |
-| `privacy` | roles instead of names in anything that leaves the project | on |
 | `docs-toward-root` | docs move up to where people look; code docs stay with code | workspace |
 | `task-two-homes` | code host for work, the status home (board or issues) for status, linked both ways | when status lives outside the code |
 | `skills-per-task` | use a library skill for major tasks and name it | when a skills library exists |
 | `three-lanes` | every step is Auto, Propose or Human; unsure means Propose | when agents do real work |
 | `real-checkpoints` | an approval request shows a count, an example and what looks off | with `three-lanes` |
 | `spec-first` | goal, plan, out of scope and open questions before building | team of two or more |
-| `one-task-one-change` | one task, one change request, with a hand-over note | when code is reviewed |
 | `authorship` | one named person stands behind every piece of work | team of two or more |
 | `autonomy-levels` | each agent role has a level from 1 to 4; raising it is a decision | when agent roles are listed |
-| `token-budget` | scoped work, narrow reads, one check, short answers | off |
 | `conductor` | main session plans and checks, worker agents do the work | off |
 | `session-naming` | sessions named `<role> <project>` | off |
 | `ci-off-laptop` | heavy jobs run on the build server | off |
