@@ -21,6 +21,7 @@ Ask only what the project itself does not answer. Look first, then ask.
 3. **Who works here?** Roles, what each owns, what each must not do.
    If agents work here too: which agent roles exist, which human role each works for, and what each must stop for.
 4. **Where does task status live?** A board outside the project (which tool), issues in the repo, or a file.
+5. **Is there a test stage and a production?** For each environment: the branch, what data it holds, who may deploy, what an agent may do. Ask only for a product that is deployed.
 
 ## Round 2: sources of truth
 
@@ -35,11 +36,15 @@ For each topic ask "where is the one place this is right?" and "is that place in
 | Roles and decision rights | `roles.md` | HR system |
 | Customer or user data | none | CRM, product database |
 | Money: prices, invoices, budget | a pricing file | accounting tool |
-| Brand, design | a design-system folder | design tool file |
+| Brand, design | a design-system folder | design tool file (a published page of it is a mirror, not a second home) |
+| API contract | generated from code into a docs folder | none |
+| How the team operates, past work | an operations folder | a knowledge base with access by role |
 | Credentials | never a file in the project | password manager, secrets store |
 | Research and evidence | a research folder with dated files | survey or analytics tool |
 
 For every external home also ask: how does an agent read it (connector, export, nobody), and may an agent write to it.
+
+For each decision already made, ask what would reopen it (an event or a number). A decision nobody has made yet goes into the register with status `open`.
 
 ## Round 3: optional rule modules
 
@@ -50,10 +55,11 @@ Offer the list, with the default set preselected; the user removes what does not
 | `structure` | max 7 folders per level, checker script, generated `INDEX.md` | on |
 | `safe-removal` | copy, verify, then Trash; never a permanent delete | on |
 | `file-naming` | what-who-when names, full dates, no `_v2` or `final` | on |
-| `confirm-outward` | ask before merge, deploy, publish, send, pay, delete | on |
+| `confirm-outward` | ask before merge, deploy, publish, send, pay, delete (Claude Code does this by itself; the line is written to `AGENTS.md` only) | on |
+| `stage-and-production` | work on the working branch and the stage; production is the release role's | when the product is deployed |
 | `privacy` | roles instead of names in anything that leaves the project | on |
 | `docs-toward-root` | docs move up to where people look; code docs stay with code | workspace |
-| `task-two-homes` | code host for work, board for status, linked both ways | when a board exists |
+| `task-two-homes` | code host for work, the status home (board or issues) for status, linked both ways | when status lives outside the code |
 | `skills-per-task` | use a library skill for major tasks and name it | when a skills library exists |
 | `three-lanes` | every step is Auto, Propose or Human; unsure means Propose | when agents do real work |
 | `real-checkpoints` | an approval request shows a count, an example and what looks off | with `three-lanes` |
@@ -69,3 +75,7 @@ Offer the list, with the default set preselected; the user removes what does not
 ## No answer
 
 Do not block on an unanswered question and do not guess. Leave the field empty in the answers file: the script writes `TBD` in the table and adds an open row to `owner-inputs.md`. Tell the user how many rows are open.
+
+## Worked examples
+
+`references/examples.md` shows two filled set-ups, with answers files in `assets/`.

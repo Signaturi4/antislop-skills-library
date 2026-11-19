@@ -10,7 +10,7 @@ A project goes wrong in a predictable way: the same fact lives in three places, 
 | File | Answers |
 |---|---|
 | `sources-of-truth.md` | Where is the one place this fact is right? Is that place inside the project or outside it? |
-| `decision-register.md` | What was decided, by whom, when and why? |
+| `decision-register.md` | What was decided, by whom, when and why? What is still open? What would reopen it? |
 | `roles.md` | Who owns what, and whose yes does each action need? |
 | `owner-inputs.md` | What is waiting for a person? |
 
@@ -50,7 +50,8 @@ Show the dry-run list to the user before the real run. The script:
 
 - writes the four files into the governance folder (`docs/` in a repo, `<first folder>/governance/` in a workspace, or `governance_dir` from the answers);
 - never overwrites a file that exists;
-- puts one marked block at the end of `CLAUDE.md` and replaces that block on a re-run (also in `AGENTS.md` when the project has one);
+- puts one marked block at the end of `CLAUDE.md` and replaces that block on a re-run;
+- writes the same block with the full wording to `AGENTS.md` when the project has one (see "Already built into Claude Code");
 - creates the top-level folders for a workspace;
 - installs `.claude/check-structure.py` and `.claude/structure.json`.
 
@@ -68,13 +69,14 @@ These go into the file; know them when filling the table.
 
 - **One home per topic.** Every other place links to the home.
 - **Internal or external is stated, never implied.** Internal is a file in the project. External is a system outside it. An agent treats them differently: it edits an internal home, and it reads an external home through the tool named in "read via".
-- **No mirrors.** A copy of an external home inside the project is a dated snapshot and is never edited.
+- **A copy is a snapshot or a mirror, never a second home.** A snapshot carries its date and is never edited. A mirror (a published design-system page, a generated API reference) says which home it follows, never overrules it, and is updated in the same change.
+- **No access means no check.** When the tool that reads a home is not connected, say so; never claim a match with a home you did not read.
 - **The home wins a conflict.** When the home itself looks wrong, show both versions and ask the person who owns the topic.
 - **A row needs an owner.** A home nobody owns goes stale; ask who keeps it right.
 - **Credentials have an external home only.** Name the secrets store; never a file in the project.
 
 A good row: `task status | task board | external | <tool and board name> | owner | board connector | git history, chat`.
-A bad row: `tasks | Notion and GitHub | both | ...` (two homes means no home; split it into "status" and "code").
+A bad row: `tasks | the board and the code host | both | ...` (two homes means no home; split it into "status" and "code").
 
 ## Working with agents: why these modules exist
 
@@ -93,6 +95,38 @@ Agent roles go into the answers file under `agents` (agent role, the human role 
 
 A checkpoint is worth having only if the person can catch something at it. "Approve all?" with nothing to look at gets a yes by habit; "3 files change, here is the new error message, no timeout is set" gets read.
 
+## Decisions, open questions and inputs
+
+- A decision row has a status: `decided`, `open`, `killed` or `replaced by D-...`. An open question that needs a decision is a row with status `open`; the script also adds it to `owner-inputs.md` so the person sees it.
+- "Reopen when" is the event or number that puts a decision back on the table ("cost per signed deal above 5% for a month", "the client gives access"). Ask for it; a decision without one is kept, but nobody will know when to look at it again.
+- An owner-inputs row has a kind: `decision`, `answer` or `click` (a manual step in a tool), and says where the person acts.
+
+## Test stage and production
+
+For a product that is deployed, list the environments in the answers file under `environments` (name, purpose, branch, data, who deploys, what an agent may do) and switch on `stage-and-production`. `roles.md` gets an "Environments" table. The usual shape: everyone works on a working branch that deploys to a stage with synthetic data; one role merges to the release branch and releases production; agents read production and never write to it.
+
+## Already built into Claude Code
+
+`CLAUDE.md` loads into every session, so a line that repeats what Claude Code does without being told is wasted. The script leaves those out of `CLAUDE.md` and keeps the full wording for `AGENTS.md`, because other agents may not behave the same way.
+
+| Module | In Claude Code already | What the project line still adds |
+|---|---|---|
+| `confirm-outward` | asks before hard-to-undo or outward actions, commits and pushes only when asked, a yes covers one action | nothing: no line in `CLAUDE.md`. Whose yes is needed comes from `roles.md` |
+| `token-budget` | does what was asked, no unrequested files or refactors | narrow reads, one proving check, short answers |
+| `conductor` | decides by itself when to hand work to a subagent | which kind of agent gets which kind of work |
+| `safe-removal` | looks at a target before deleting or overwriting | Trash instead of delete, copy and verify before removing the source |
+| `privacy` | keeps personal details out of requests to outside services | roles instead of names inside the project's own files, issues and shared documents |
+| `skills-per-task` | uses an installed skill when the task fits it | check the library for skills that are not installed; name the skills used |
+| `three-lanes` | the Propose lane is its default for outward actions | the Auto and Human lanes, and "unsure means Propose" |
+| `one-task-one-change` | branches before committing on the default branch | one task per change, task and decision ids, the hand-over note |
+| `spec-first` | the opposite: it writes no planning documents unless asked | this line is what makes it write the spec |
+
+Not built in, always written when on: `structure`, `docs-toward-root`, `file-naming`, `task-two-homes`, `stage-and-production`, `real-checkpoints`, `authorship`, `autonomy-levels`, `session-naming`, `ci-off-laptop`. The four pointer lines (sources, decisions, roles, owner inputs) are always written: Claude Code cannot know them.
+
+## Worked examples
+
+`references/examples.md` shows two set-ups filled in, with roles only: a small agency workspace and a client product with a test stage and production. Read it before the interview when the project looks like either. Answers files to start from: `assets/answers.agency-workspace.json` and `assets/answers.client-product.json`.
+
 ## Extend later
 
 The four files are living documents. Edit them directly; do not re-run the script to change them.
@@ -101,11 +135,13 @@ The four files are living documents. Edit them directly; do not re-run the scrip
 |---|---|
 | New kind of fact | add a row to `sources-of-truth.md`; `TBD` plus an owner-inputs row when the home is unknown |
 | A `TBD` got answered | fill the row, set the owner-inputs row to `done` |
-| New decision | add a row to `decision-register.md`; never edit an old row, replace it |
+| New decision | add a row to `decision-register.md` with who, why and what reopens it; never edit an old row, replace it |
+| A question nobody has decided | add it to the register with status `open` and to `owner-inputs.md` |
+| New environment, or a change of who deploys | edit the "Environments" table in `roles.md` and record it as a decision |
 | New agent role, or a higher autonomy level | edit the "Agent roles" table in `roles.md` and record it as a decision |
 | New role or a change of who decides | edit `roles.md` and record it as a decision |
 | New folder | add it, add its line to `.claude/structure.json`, run the checker with `--write` |
-| Turn a module on or off | change `modules` in the answers file and re-run `setup.py`; only the `CLAUDE.md` block changes |
+| Turn a module on or off | change `modules` in the answers file and re-run `setup.py`; only the `CLAUDE.md` and `AGENTS.md` blocks change |
 
 ## Works with
 

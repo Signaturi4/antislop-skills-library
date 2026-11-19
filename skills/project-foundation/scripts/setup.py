@@ -6,12 +6,13 @@ Usage:
 
 What it writes (existing files are never overwritten, except the marked block in CLAUDE.md):
   <governance_dir>/sources-of-truth.md   one home per kind of fact, internal or external
-  <governance_dir>/decision-register.md  decisions with id, date, who, why
+  <governance_dir>/decision-register.md  decisions with id, date, who, why, when to reopen
   <governance_dir>/roles.md              roles, what each owns, who decides what
   <governance_dir>/owner-inputs.md       what agents and people are waiting for
   <governance_dir>/handoff-template.md   hand-over note for each change (module "one-task-one-change")
-  CLAUDE.md                              short rule block between markers (replaced on re-run)
-  AGENTS.md                              same block, only when the file already exists
+  CLAUDE.md                              short rule block between markers (replaced on re-run);
+                                         lines that only repeat what Claude Code does by itself are left out
+  AGENTS.md                              the block with the full wording, only when the file already exists
   .claude/check-structure.py, .claude/structure.json, INDEX.md   (when "structure" is on)
   top-level folders from "folders"       (kind "workspace" only)
 
@@ -48,13 +49,17 @@ MODULES = {
         "File names say what, who, when: lowercase words and hyphens, a full `YYYY-MM-DD` date only on one-time documents. No `_v2`, `final` or `copy`.",
     ],
     "task-two-homes": [
-        "Every task has two homes: the code host for code and docs, the task board for status, owner and due date. Link them to each other. The board wins on status.",
+        "Every task has two homes: the code host for code and docs, and the home named for \"task status\" in `{gov}/sources-of-truth.md` for status, owner and due date. Link them to each other. On status that home wins.",
     ],
     "confirm-outward": [
         "Ask before anything hard to undo or visible outside the project: merge, deploy, publish, send, pay, delete, change access. A yes covers that one action only.",
     ],
     "privacy": [
         "No personal names, emails, client names or secrets in anything that leaves the project (public repos, issues a client can read, shared documents). Use roles.",
+    ],
+    "stage-and-production": [
+        "Work on the working branch and the test stage, never on the release branch or production. Every change request targets the working branch.",
+        "Environments, the data each one holds and who may release are in `{gov}/roles.md`. Real data stays out of the test stage; production is read-only for agents.",
     ],
     "token-budget": [
         "Do exactly what was asked. Read narrowly (search first, then only the lines needed). One check that proves the result. Short answers, result first.",
@@ -91,6 +96,21 @@ MODULES = {
     ],
     "skills-per-task": [
         "For any major task check the skills library first and use a fitting skill. Name the skills used in the final report; say so in one line when none fits.",
+    ],
+}
+
+# What goes into CLAUDE.md when a module only repeats, in part or in full, what Claude Code
+# already does without being told (it asks before hard-to-undo or outward actions, commits and
+# pushes only when asked, looks before it deletes, does only what was asked, delegates by its
+# own rules). AGENTS.md gets the full text from MODULES, because other agents may not.
+# An empty list means: nothing project-specific is left, write no line.
+CLAUDE_SHORT = {
+    "confirm-outward": [],
+    "token-budget": [
+        "Read narrowly (search first, then only the lines needed). One check that proves the result. Short answers, result first.",
+    ],
+    "conductor": [
+        "Work that needs judgment goes to a worker agent, mechanical work to a cheaper one. The main session writes the briefs and checks every report.",
     ],
 }
 
@@ -147,11 +167,12 @@ Each kind of fact has **one home**. Every other place links to the home and neve
 
 1. **One home per topic.** Find the topic in the table before you write a fact down. If it has a home, write it there.
 2. **Internal or external.** Internal means a file in this project. External means a system outside it (a task board, a CRM, an accounting tool, a client's system). The table says which.
-3. **External homes are read, not mirrored.** Read them through the tool in "read via". A copy inside the project is allowed only as a snapshot with the date in its file name, and it is never edited.
+3. **External homes are read, not copied by hand.** Read them through the tool in "read via". A copy inside the project is either a snapshot with the date in its file name, never edited, or a mirror: a mirror says which home it follows, never overrules it, and is updated in the same change as the home.
 4. **The home wins.** When two places disagree, the home is right. When the home itself looks wrong, show both versions to the {owner} and ask; do not pick a side.
 5. **No home yet.** Add a row with `{TBD}`, add a line to `owner-inputs.md`, and ask. Do not invent a home.
 6. **Generated files are not homes.** Indexes and reports name the command that makes them and are never edited by hand.
 7. **Cite the home.** Every claim about users, numbers, money or decisions says where it came from. With no source, write "no source yet".
+8. **No access means no check.** When the tool that reads a home is not connected, say so. Never state that something matches a home you did not read.
 
 ## Table
 
@@ -169,9 +190,12 @@ Each kind of fact has **one home**. Every other place links to the home and neve
     # --- decisions
     dec_rows = []
     for i, d in enumerate(answers.get("decisions", []), 1):
-        dec_rows.append([d.get("id") or f"D-{i:03d}", d.get("date") or today, d.get("decision"), d.get("decided_by") or owner, d.get("why"), d.get("scope") or "project", d.get("replaces") or "none", d.get("status") or "active"])
+        dec_rows.append([d.get("id") or f"D-{i:03d}", d.get("date") or today, d.get("decision"), d.get("status") or "decided", d.get("decided_by") or owner, d.get("why"), d.get("reopen_when") or "not set", d.get("review") or "none", d.get("replaces") or "none"])
+    for row in dec_rows:
+        if str(row[3]).strip() == "open":
+            open_inputs.append((f"Decide {row[0]}: {cell(row[2])}", "an open decision in the register"))
     if not dec_rows:
-        dec_rows.append(["D-001", today, "Project foundation set up: sources of truth, roles, decision register", owner, "one place to look for how the project runs", "project", "none", "active"])
+        dec_rows.append(["D-001", today, "Project foundation set up: sources of truth, roles, decision register", "decided", owner, "one place to look for how the project runs", "the files stop being read or kept current", "none", "none"])
 
     decisions_md = f"""# Decision register: {name}
 
@@ -184,11 +208,12 @@ The home for decisions. A decision that is not here does not bind anyone.
 3. Agents record decisions; they do not make them. Who may decide what is in `roles.md`.
 4. A decision is not edited after the fact. To change it, add a new row and set the old one to `replaced by D-...`.
 5. A rule in `CLAUDE.md` or in a skill that comes from a decision names its id.
-6. An open question is not a decision. It goes to `owner-inputs.md`.
+6. Status is one of `decided` (in force), `open` (waiting for the person who decides), `killed` (stopped, reason kept) or `replaced by D-...`. A row with status `open` also gets a row in `owner-inputs.md`, so the person sees it.
+7. "Reopen when" names the event or number that puts the decision back on the table. A decision with a review date is read again on that date.
 
 ## Register
 
-{table(["Id", "Date", "Decision", "Decided by", "Why", "Scope", "Replaces", "Status"], dec_rows)}
+{table(["Id", "Date", "Decision", "Status", "Decided by", "Why", "Reopen when", "Review", "Replaces"], dec_rows)}
 """
 
     # --- roles
@@ -214,6 +239,17 @@ Autonomy levels: 1 human-led; 2 the agent drafts and prepares, a person approves
 
 """
 
+    env_rows = [[e.get("name"), e.get("purpose"), e.get("branch"), e.get("data"), e.get("deploys"), e.get("agent_may")] for e in answers.get("environments", [])]
+    envs_md = ""
+    if env_rows:
+        envs_md = f"""## Environments
+
+{table(["Environment", "Used for", "Branch", "Data", "Who deploys", "What an agent may do"], env_rows)}
+
+"""
+    elif "stage-and-production" in modules:
+        open_inputs.append(("List the environments in roles.md: branch, data and who deploys each", "the stage-and-production rule points at a table that is empty"))
+
     roles_md = f"""# Roles and responsibilities: {name}
 
 The home for who does what and who decides what.
@@ -238,7 +274,7 @@ One role can be one person, several people, or an agent. Use the role name, not 
 
 Every action in "Who decides what" is Propose or Human. When unsure, use Propose. A request for a yes shows a count, a real example and what looks off, so the yes is a check and not a habit.
 
-{agents_md}## Rules
+{envs_md}{agents_md}## Rules
 
 1. Work goes to the role that owns the area. Do not assign work outside a role's "owns" column.
 2. An action in the table above needs a yes from the role in "decides". The yes covers that one action.
@@ -250,9 +286,9 @@ Every action in "Who decides what" is Propose or Human. When unsure, use Propose
     # --- owner inputs
     for q in answers.get("open_questions", []):
         open_inputs.append((q, "asked during set-up"))
-    input_rows = [[f"A{i}", today, what, why, "project-foundation set-up", "open"] for i, (what, why) in enumerate(open_inputs, 1)]
+    input_rows = [[f"A{i}", today, what, "decision" if what.startswith("Decide ") else "answer", why, f"`{gov}/`", "project-foundation set-up", "open"] for i, (what, why) in enumerate(open_inputs, 1)]
     if not input_rows:
-        input_rows.append(["A1", today, "(example) Confirm the list of roles", "example row, remove it", "set-up", "done"])
+        input_rows.append(["A1", today, "(example) Confirm the list of roles", "decision", "example row, remove it", f"`{gov}/roles.md`", "set-up", "done"])
 
     inputs_md = f"""# Owner inputs: {name}
 
@@ -260,32 +296,37 @@ What agents and people are waiting for. One row per decision, answer or manual s
 
 ## Rules
 
-1. Add a row when you stop for a decision. Say what you need and what it blocks.
-2. Ids never change. When the answer arrives, set the status to `done` and put the answer in the decision register if it is a decision.
-3. Read the open rows at the start of a working session.
+1. Add a row when you stop for a decision. Say what you need, what it blocks and where the person acts.
+2. Kind is `decision` (a choice only that person may make), `answer` (a fact only they know) or `click` (a manual step in a tool: billing, access, a setting). No passwords or keys in a row.
+3. Ids never change. When the answer arrives, set the status to `done` and put the answer in the decision register if it is a decision.
+4. Read the open rows at the start of a working session.
 
 ## Inputs
 
-{table(["Id", "Date", "What is needed", "Why", "Asked by", "Status"], input_rows)}
+{table(["Id", "Date", "What is needed", "Kind", "Why", "Where", "Asked by", "Status"], input_rows)}
 """
 
     # --- CLAUDE.md block
-    lines = [
+    def make_block(full):
+      lines = [
         BEGIN,
         f"## Project foundation ({name})",
         "",
         f"- Sources of truth: `{gov}/sources-of-truth.md`. One home per kind of fact. Find the home before writing a fact down; link, do not copy. When two places disagree the home wins; when the home looks wrong, show both and ask.",
-        f"- Decisions: `{gov}/decision-register.md`. Record decisions there with who and why. Agents record, they do not decide.",
+        f"- Decisions: `{gov}/decision-register.md`. Record decisions there with who, why and when to reopen. Agents record, they do not decide.",
         f"- Roles: `{gov}/roles.md`. It says who owns what and whose yes each action needs.",
         f"- Waiting on a person: add a row to `{gov}/owner-inputs.md`, then carry on with what does not depend on it. Read the open rows at the start of a session.",
-    ]
-    for m in modules:
-        for text in MODULES[m]:
+      ]
+      for m in modules:
+        texts = MODULES[m] if full or m not in CLAUDE_SHORT else CLAUDE_SHORT[m]
+        for text in texts:
             lines.append("- " + text.format(max=limit, max_plus=limit + 1, gov=gov))
-    if folders and kind == "workspace":
+      if folders and kind == "workspace":
         lines += ["", "| Folder | Put here |", "|---|---|"] + [f"| `{f['name']}/` | {cell(f.get('desc'))} |" for f in folders]
-    lines.append(END)
-    block = "\n".join(lines) + "\n"
+      lines.append(END)
+      return "\n".join(lines) + "\n"
+
+    block = {"CLAUDE.md": make_block(False), "AGENTS.md": make_block(True)}
 
     files = {
         f"{gov}/sources-of-truth.md": sources_md,
@@ -355,9 +396,9 @@ def main():
             with open(path, "w", encoding="utf-8") as f:
                 f.write(text)
 
-    log.append(f"{put_block(os.path.join(root, 'CLAUDE.md'), block, dry)} CLAUDE.md")
+    log.append(f"{put_block(os.path.join(root, 'CLAUDE.md'), block['CLAUDE.md'], dry)} CLAUDE.md")
     if os.path.exists(os.path.join(root, "AGENTS.md")):
-        log.append(f"{put_block(os.path.join(root, 'AGENTS.md'), block, dry)} AGENTS.md")
+        log.append(f"{put_block(os.path.join(root, 'AGENTS.md'), block['AGENTS.md'], dry)} AGENTS.md (full wording)")
 
     if structure is not None:
         cdir = os.path.join(root, ".claude")

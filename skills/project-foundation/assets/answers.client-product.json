@@ -1,0 +1,53 @@
+{
+  "name": "Client product with a test stage and production",
+  "kind": "repo",
+  "owner_role": "project lead",
+  "governance_dir": "docs",
+  "roles": [
+    {"role": "project lead", "who": "one person", "owns": "scope, client contact, architecture, releases", "decides": "merge to the release branch, release, scope, spend", "does_not": "build every task"},
+    {"role": "developer", "who": "one person", "owns": "backend, data pipelines, API, tests", "decides": "how a technical task is built", "does_not": "push to the release branch; touch production"},
+    {"role": "designer", "who": "one person", "owns": "screens, design system, test of each change on the stage", "decides": "design details inside the agreed design system", "does_not": "change scope"},
+    {"role": "client", "who": "the client's team", "owns": "the signed scope, their own systems and data", "decides": "scope changes, acceptance", "does_not": "see internal names or working notes"}
+  ],
+  "decision_rights": [
+    {"action": "merge to the release branch", "decides": "project lead", "consulted": "developer", "agent_may": "open a change request into the working branch, then stop"},
+    {"action": "release to production", "decides": "project lead", "agent_may": "prepare the release notes and the checklist, then stop"},
+    {"action": "run a paid job (scraping, enrichment, model scoring)", "decides": "project lead", "agent_may": "show the cost preview; run only after a yes for that run"},
+    {"action": "change scope", "decides": "client and project lead", "agent_may": "write the open question into the register"},
+    {"action": "remove inherited code", "decides": "project lead", "agent_may": "say what replaced it and ask"},
+    {"action": "move or rename a doc", "decides": "project lead", "agent_may": "propose old path and new path, then wait"}
+  ],
+  "environments": [
+    {"name": "local", "purpose": "building and unit checks", "branch": "your own branch", "data": "seeded sample data", "deploys": "anyone", "agent_may": "everything"},
+    {"name": "stage", "purpose": "team testing of every change", "branch": "the working branch; a push deploys by itself", "data": "synthetic only", "deploys": "a merge into the working branch", "agent_may": "deploy, test, read logs"},
+    {"name": "production", "purpose": "the client's live system", "branch": "the release branch; a push also publishes the repository to the client", "data": "real", "deploys": "project lead only", "agent_may": "read only"}
+  ],
+  "agents": [
+    {"agent": "full-stack", "works_for": "developer", "does": "builds a task and opens the change request", "level": 2, "stops_for": "merge, anything on production"},
+    {"agent": "stage", "works_for": "developer", "does": "puts a change on the stage and runs the checks", "level": 3, "stops_for": "anything on production"},
+    {"agent": "release", "works_for": "project lead", "does": "prepares the release: notes, checklist, the list of what the client will see", "level": 2, "stops_for": "the merge itself"},
+    {"agent": "design review", "works_for": "designer", "does": "checks a screen against the design file and lists findings", "level": 2, "stops_for": "a conflict between design file and code"}
+  ],
+  "sources": [
+    {"topic": "agreed scope and task ids", "home": "signed scope of work", "kind": "internal", "location": "docs/1.engage/scope-of-work.md", "owner": "project lead", "read_via": "file", "wins_over": "older drafts, chat, the backlog"},
+    {"topic": "tasks, findings, open work", "home": "issue tracker of the repository", "kind": "external", "location": "the code host, issues", "owner": "project lead", "read_via": "code host command line", "wins_over": "task lists in plans and docs"},
+    {"topic": "business data", "home": "the product database", "kind": "external", "location": "production database", "owner": "client", "read_via": "the product API, read only", "wins_over": "spreadsheets, exports, messages"},
+    {"topic": "API contract", "home": "generated from code", "kind": "internal", "location": "docs/openapi/", "owner": "developer", "read_via": "file; regenerate, never hand-edit", "wins_over": "hand-written endpoint lists"},
+    {"topic": "design: layouts, tokens, components, copy", "home": "design file", "kind": "external", "location": "design tool, one named file", "owner": "designer", "read_via": "design tool connector", "wins_over": "the published design-system page (a mirror), code styles"},
+    {"topic": "decisions and open questions", "home": "decision register", "kind": "internal", "location": "docs/decision-register.md", "owner": "project lead", "read_via": "file", "wins_over": "chat, change-request comments"},
+    {"topic": "how built code behaves", "home": "the code", "kind": "internal", "location": "the repository", "owner": "developer", "read_via": "files", "wins_over": "docs that describe it"},
+    {"topic": "the client's sales system", "home": "client CRM", "kind": "external", "location": "client system, no access yet", "owner": "client", "read_via": "nobody", "wins_over": "any number about deals typed by hand"},
+    {"topic": "credentials", "home": "secrets store on the server", "kind": "external", "location": "server environment", "owner": "project lead", "read_via": "nobody", "wins_over": "any file"}
+  ],
+  "decisions": [
+    {"decision": "The signed scope of work is the only scope; the earlier, larger draft is superseded", "decided_by": "project lead", "why": "only the signed document is agreed with the client", "reopen_when": "a new scope is signed"},
+    {"decision": "The product database is the only home for business data; sheets, mail and forms are doors into it or copies", "decided_by": "project lead", "why": "two copies of a lead list disagreed", "reopen_when": "never without a new decision"},
+    {"decision": "The design file is the home for design; the published design-system page follows it and never overrules it", "decided_by": "project lead", "why": "replaces an earlier decision that made the published page the home", "replaces": "an earlier decision that named the published page", "reopen_when": "the design tool is dropped"},
+    {"decision": "The client's sales system is on hold: nothing reads from it or writes to it", "decided_by": "project lead", "why": "the client has not given access", "reopen_when": "the client provides access"},
+    {"decision": "Work happens on the working branch; a push to the release branch publishes to the client and releases production, and only the project lead does it", "decided_by": "project lead", "why": "the repository is delivered to the client with internal paths and names removed", "reopen_when": "delivery to the client stops"},
+    {"decision": "Inherited template code is reference only: not fixed, not tested, not built on", "decided_by": "project lead", "why": "the new system replaces it part by part", "reopen_when": "a reference part is needed in production"},
+    {"decision": "Who decides the score threshold per customer segment", "status": "open", "decided_by": "client and project lead", "why": "raised in review, affects acceptance", "reopen_when": "n/a"}
+  ],
+  "modules": ["file-naming", "confirm-outward", "privacy", "stage-and-production", "spec-first", "one-task-one-change", "authorship", "three-lanes", "real-checkpoints", "autonomy-levels", "skills-per-task", "ci-off-laptop"],
+  "open_questions": ["When will the client give access to their sales system?"]
+}

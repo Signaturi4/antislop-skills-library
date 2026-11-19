@@ -1,0 +1,57 @@
+{
+  "name": "Small agency workspace",
+  "kind": "workspace",
+  "owner_role": "owner",
+  "max_folders": 7,
+  "governance_dir": "1-company/governance",
+  "folders": [
+    {"name": "1-company", "desc": "who the agency is: concept, clients, brand, how it runs"},
+    {"name": "2-sales-marketing", "desc": "offers, proposals, competition, content"},
+    {"name": "3-projects", "desc": "side and client project work outside the main repos"},
+    {"name": "4-repos", "desc": "working git repos; each keeps its own layout"},
+    {"name": "5-research", "desc": "research outputs and reading"},
+    {"name": "6-media", "desc": "video, images, motion"},
+    {"name": "7-archive", "desc": "move logs, backups, items waiting for deletion"}
+  ],
+  "roles": [
+    {"role": "owner", "who": "founder", "owns": "strategy, architecture, closing deals, money, client reports", "decides": "merge, deploy, spend, publish, scope, price", "does_not": "day-to-day build work that a role below owns"},
+    {"role": "developer", "who": "one person", "owns": "code, data pipelines, tests, technical docs", "decides": "how a task is built", "does_not": "merge to the release branch; deploy production"},
+    {"role": "designer", "who": "one person", "owns": "screens, flows, visual quality; tests each change on the live test stage", "decides": "design details inside an agreed flow", "does_not": "billing, client reports, board admin"},
+    {"role": "sales", "who": "one person", "owns": "proposals and first contact", "decides": "wording of a draft", "does_not": "send a proposal without the owner's yes"}
+  ],
+  "decision_rights": [
+    {"action": "merge to the release branch", "decides": "owner", "consulted": "developer", "agent_may": "open a change request, then stop"},
+    {"action": "deploy to production", "decides": "owner", "consulted": "developer", "agent_may": "deploy to the test stage only"},
+    {"action": "spend money (ads, paid tools, servers)", "decides": "owner", "agent_may": "show the cost, then stop"},
+    {"action": "send a proposal or a message to a client", "decides": "owner", "consulted": "sales", "agent_may": "write the draft, then stop"},
+    {"action": "publish content", "decides": "owner", "agent_may": "prepare the post, then stop"},
+    {"action": "manual step in a tool (billing, access, DNS)", "decides": "owner", "agent_may": "ask; after a yes for that step, do it; stop at passwords and payment confirmation"}
+  ],
+  "agents": [
+    {"agent": "conductor", "works_for": "owner", "does": "splits a job into tasks, writes each brief, checks every report", "level": 2, "stops_for": "merge, deploy, money, publishing, product choices"},
+    {"agent": "worker", "works_for": "the role that owns the area", "does": "one real subtask: build, debug, research, write", "level": 2, "stops_for": "anything outside its brief"},
+    {"agent": "mechanical", "works_for": "the role that owns the area", "does": "renames, moving files, running tests, opening change requests", "level": 3, "stops_for": "a step that needs judgment"},
+    {"agent": "sales drafts", "works_for": "sales", "does": "scans job posts, drafts proposals", "level": 2, "stops_for": "sending"}
+  ],
+  "sources": [
+    {"topic": "task status, owner, due date", "home": "team task board", "kind": "external", "location": "the board tool, main board", "owner": "owner", "read_via": "board connector", "wins_over": "git history, chat, daily notes"},
+    {"topic": "code and technical docs", "home": "git repositories", "kind": "internal", "location": "4-repos/<repo>", "owner": "developer", "read_via": "files, change requests", "wins_over": "copies in documents and chats"},
+    {"topic": "strategy decisions", "home": "decision register", "kind": "internal", "location": "1-company/governance/decision-register.md", "owner": "owner", "read_via": "file", "wins_over": "chat, meeting notes, agent memory"},
+    {"topic": "team and roles", "home": "roles file", "kind": "internal", "location": "1-company/governance/roles.md", "owner": "owner", "read_via": "file", "wins_over": "the people page on the board, slides"},
+    {"topic": "how the agency operates, past work", "home": "operations knowledge base", "kind": "external", "location": "encrypted replica on the build server", "owner": "owner", "read_via": "search tool, read only, access by role", "wins_over": "what an agent remembers from a session"},
+    {"topic": "proposals and client messages", "home": "freelance marketplace account", "kind": "external", "location": "the marketplace", "owner": "sales", "read_via": "marketplace connector, read only", "wins_over": "drafts in 2-sales-marketing"},
+    {"topic": "reusable skills", "home": "skills library repository", "kind": "internal", "location": "4-repos/skills-library", "owner": "owner", "read_via": "files", "wins_over": "installed copies on a laptop"},
+    {"topic": "credentials", "home": "secrets store", "kind": "external", "location": "password manager", "owner": "owner", "read_via": "nobody; a person pastes at run time", "wins_over": "any file"},
+    {"topic": "prices and invoices", "home": "", "kind": "", "location": "", "owner": "owner"}
+  ],
+  "decisions": [
+    {"decision": "The task board is the home for task status; git is the home for code and docs. Every task has both and they link to each other", "decided_by": "owner", "why": "a daily report built from git alone was out of date", "reopen_when": "the board and git disagree more than once a week"},
+    {"decision": "The freelance marketplace is sales channel one; the professional network is channel two, later", "decided_by": "owner", "why": "one channel gets all proposal effort until it pays", "reopen_when": "cost per signed deal above 5% of deal value for a month", "review": "first Sunday of each month"},
+    {"decision": "The designer has no admin work; billing, client reports and board admin are the owner's", "decided_by": "owner", "why": "the designer first learns the main flows", "reopen_when": "an operations role is hired"},
+    {"decision": "The designer reviews each change by testing it on the live test stage; no separate review step", "decided_by": "owner", "why": "a second review step slowed delivery and found less than a real test", "reopen_when": "a defect reaches production that a code review would have caught"},
+    {"decision": "Heavy jobs and CI run on the build server, never on a laptop", "decided_by": "owner", "why": "laptops ran out of memory", "reopen_when": "the build server is down for more than a day"},
+    {"decision": "Boosted listings on the marketplace: how many and what budget", "status": "open", "decided_by": "owner", "why": "the ads budget is not set", "reopen_when": "n/a"}
+  ],
+  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task", "three-lanes", "real-checkpoints", "authorship", "autonomy-levels", "conductor", "session-naming", "ci-off-laptop", "token-budget"],
+  "open_questions": ["Which tool holds prices and invoices?"]
+}
