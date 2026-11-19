@@ -14,7 +14,7 @@ A project goes wrong in a predictable way: the same fact lives in three places, 
 | `roles.md` | Who owns what, and whose yes does each action need? |
 | `owner-inputs.md` | What is waiting for a person? |
 
-Optional modules add the folder rule, safe removal, file naming and other working rules.
+Optional modules add the folder rule, safe removal, file naming and other working rules. A second group of modules is about people working with agents, see "Working with agents" below.
 
 ## Modes
 
@@ -76,6 +76,23 @@ These go into the file; know them when filling the table.
 A good row: `task status | task board | external | <tool and board name> | owner | board connector | git history, chat`.
 A bad row: `tasks | Notion and GitHub | both | ...` (two homes means no home; split it into "status" and "code").
 
+## Working with agents: why these modules exist
+
+When two people each hand work to an agent, text piles up that nobody read and the result holds choices nobody made. Four things go missing: an author, recorded decisions, a visible process and a shared understanding. The files above bring back decisions and process. These modules bring back the rest; offer them whenever agents do real work in the project.
+
+| Module | What it restores | What it adds |
+|---|---|---|
+| `three-lanes` | a person holds every decision | each step is Auto, Propose or Human; the table goes into `roles.md` |
+| `real-checkpoints` | a yes that means something | an approval request shows a count, one real example and what looks off |
+| `spec-first` | shared understanding | goal, plan, out of scope and open questions, read by a person before building |
+| `one-task-one-change` | visible process, traceability | one task is one change request that names its task and decision ids and carries a hand-over note (`handoff-template.md`) |
+| `authorship` | an author | one named person per piece of work, and three questions before passing it on |
+| `autonomy-levels` | control over how far agents go | a level from 1 to 4 per agent role; level 2 by default, raised by a recorded decision |
+
+Agent roles go into the answers file under `agents` (agent role, the human role it works for, what it does, level, what it stops for). `roles.md` then gets an "Agent roles" table. One session has one agent role, and the human role it works for answers for its output.
+
+A checkpoint is worth having only if the person can catch something at it. "Approve all?" with nothing to look at gets a yes by habit; "3 files change, here is the new error message, no timeout is set" gets read.
+
 ## Extend later
 
 The four files are living documents. Edit them directly; do not re-run the script to change them.
@@ -85,6 +102,7 @@ The four files are living documents. Edit them directly; do not re-run the scrip
 | New kind of fact | add a row to `sources-of-truth.md`; `TBD` plus an owner-inputs row when the home is unknown |
 | A `TBD` got answered | fill the row, set the owner-inputs row to `done` |
 | New decision | add a row to `decision-register.md`; never edit an old row, replace it |
+| New agent role, or a higher autonomy level | edit the "Agent roles" table in `roles.md` and record it as a decision |
 | New role or a change of who decides | edit `roles.md` and record it as a decision |
 | New folder | add it, add its line to `.claude/structure.json`, run the checker with `--write` |
 | Turn a module on or off | change `modules` in the answers file and re-run `setup.py`; only the `CLAUDE.md` block changes |

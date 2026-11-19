@@ -18,7 +18,8 @@ Ask only what the project itself does not answer. Look first, then ask.
 
 1. **What is this project and who is it for?** One sentence. Skip when the README says it.
 2. **Who decides?** Name the role that gives the final yes on merge, deploy, money and publishing. One role, or one per action.
-3. **Who works here?** Roles, what each owns, what each must not do. People or agents.
+3. **Who works here?** Roles, what each owns, what each must not do.
+   If agents work here too: which agent roles exist, which human role each works for, and what each must stop for.
 4. **Where does task status live?** A board outside the project (which tool), issues in the repo, or a file.
 
 ## Round 2: sources of truth
@@ -54,6 +55,12 @@ Offer the list, with the default set preselected; the user removes what does not
 | `docs-toward-root` | docs move up to where people look; code docs stay with code | workspace |
 | `task-two-homes` | code host for work, board for status, linked both ways | when a board exists |
 | `skills-per-task` | use a library skill for major tasks and name it | when a skills library exists |
+| `three-lanes` | every step is Auto, Propose or Human; unsure means Propose | when agents do real work |
+| `real-checkpoints` | an approval request shows a count, an example and what looks off | with `three-lanes` |
+| `spec-first` | goal, plan, out of scope and open questions before building | team of two or more |
+| `one-task-one-change` | one task, one change request, with a hand-over note | when code is reviewed |
+| `authorship` | one named person stands behind every piece of work | team of two or more |
+| `autonomy-levels` | each agent role has a level from 1 to 4; raising it is a decision | when agent roles are listed |
 | `token-budget` | scoped work, narrow reads, one check, short answers | off |
 | `conductor` | main session plans and checks, worker agents do the work | off |
 | `session-naming` | sessions named `<role> <project>` | off |

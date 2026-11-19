@@ -9,6 +9,7 @@ What it writes (existing files are never overwritten, except the marked block in
   <governance_dir>/decision-register.md  decisions with id, date, who, why
   <governance_dir>/roles.md              roles, what each owns, who decides what
   <governance_dir>/owner-inputs.md       what agents and people are waiting for
+  <governance_dir>/handoff-template.md   hand-over note for each change (module "one-task-one-change")
   CLAUDE.md                              short rule block between markers (replaced on re-run)
   AGENTS.md                              same block, only when the file already exists
   .claude/check-structure.py, .claude/structure.json, INDEX.md   (when "structure" is on)
@@ -66,6 +67,27 @@ MODULES = {
     ],
     "ci-off-laptop": [
         "Heavy or long jobs (full test suites, builds, data jobs) run on the build server, not on a laptop.",
+    ],
+    "three-lanes": [
+        "Every step has one lane. Auto: reversible, low risk, easy to check later; the agent does it and flags what is off. Propose: it leaves the project or is costly to undo; the agent prepares everything and waits for one yes. Human: intent, goals, limits, taste.",
+        "When unsure of the lane, use Propose.",
+    ],
+    "real-checkpoints": [
+        "A request for approval shows something worth checking: how much changes (a count), one real example, and what looks off. Never ask for a bare \"approve all?\".",
+    ],
+    "spec-first": [
+        "Before building anything larger than a small fix, write the spec: goal, plan, what is out of scope, open questions. A person reads it before work starts.",
+    ],
+    "one-task-one-change": [
+        "One task is one change request (pull request or equivalent): code, design and docs for that task travel together. It names the task it closes and the decision ids it follows.",
+        "Every change request carries a hand-over note from `{gov}/handoff-template.md`: decided, skipped on purpose, still open, checked and not checked. An agent may write it; the author reads and stands behind it. No keys or personal data in it.",
+    ],
+    "authorship": [
+        "Every piece of work has one named author: a person who read it and can explain it without opening the file. Agent output with no such person is a draft, not a result.",
+        "Before passing work on, answer three questions: did a person decide this or did the agent; is the decision written down; can the author explain it. A no on any of them means stop and fix that first.",
+    ],
+    "autonomy-levels": [
+        "Agents work at the autonomy level set for their role in `{gov}/roles.md` (1 human-led, 2 agent drafts and a person approves, 3 agent acts inside guardrails, 4 fully autonomous). Level 2 is the default. A higher level is a recorded decision, given per area after the lower level worked.",
     ],
     "skills-per-task": [
         "For any major task check the skills library first and use a fitting skill. Name the skills used in the final report; say so in one line when none fits.",
@@ -179,6 +201,19 @@ The home for decisions. A decision that is not here does not bind anyone.
     rights = answers.get("decision_rights") or [{"action": a, "decides": owner} for a in DEFAULT_DECISION_RIGHTS]
     right_rows = [[x.get("action"), x.get("decides"), x.get("consulted") or "none", x.get("agent_may") or "prepare and propose, then stop"] for x in rights]
 
+    agent_rows = [[a.get("agent"), a.get("works_for"), a.get("does"), a.get("level") or 2, a.get("stops_for")] for a in answers.get("agents", [])]
+    agents_md = ""
+    if agent_rows:
+        agents_md = f"""## Agent roles
+
+One agent session has one role. Each agent role works for a human role, which answers for its output.
+
+{table(["Agent role", "Works for", "Does", "Autonomy level", "Stops for"], agent_rows)}
+
+Autonomy levels: 1 human-led; 2 the agent drafts and prepares, a person approves; 3 the agent acts inside guardrails, a person can override; 4 fully autonomous. Raising a level is a decision for the register.
+
+"""
+
     roles_md = f"""# Roles and responsibilities: {name}
 
 The home for who does what and who decides what.
@@ -193,12 +228,23 @@ One role can be one person, several people, or an agent. Use the role name, not 
 
 {table(["Action", "Decides", "Consulted", "What an agent may do"], right_rows)}
 
-## Rules
+## Three lanes for every step
+
+| Lane | Who acts | A step belongs here when |
+|---|---|---|
+| Auto | the agent, alone; it flags what is off | reversible, low risk, rule-based or easy to check later |
+| Propose | the agent prepares, a person gives one yes | it leaves the project (send, publish, spend, delete) or is costly to undo |
+| Human | a person | intent, goals, limits, taste, policy |
+
+Every action in "Who decides what" is Propose or Human. When unsure, use Propose. A request for a yes shows a count, a real example and what looks off, so the yes is a check and not a habit.
+
+{agents_md}## Rules
 
 1. Work goes to the role that owns the area. Do not assign work outside a role's "owns" column.
 2. An action in the table above needs a yes from the role in "decides". The yes covers that one action.
 3. An agent that stops for a decision adds a row to `owner-inputs.md` and carries on with whatever does not depend on the answer.
 4. A change to this file is a decision: record it in `decision-register.md`.
+5. Every piece of work has one named author, a person who can explain it. An agent is never the author.
 """
 
     # --- owner inputs
@@ -235,7 +281,7 @@ What agents and people are waiting for. One row per decision, answer or manual s
     ]
     for m in modules:
         for text in MODULES[m]:
-            lines.append("- " + text.format(max=limit, max_plus=limit + 1))
+            lines.append("- " + text.format(max=limit, max_plus=limit + 1, gov=gov))
     if folders and kind == "workspace":
         lines += ["", "| Folder | Put here |", "|---|---|"] + [f"| `{f['name']}/` | {cell(f.get('desc'))} |" for f in folders]
     lines.append(END)
@@ -247,6 +293,9 @@ What agents and people are waiting for. One row per decision, answer or manual s
         f"{gov}/roles.md": roles_md,
         f"{gov}/owner-inputs.md": inputs_md,
     }
+    if "one-task-one-change" in modules:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "handoff.template.md"), encoding="utf-8") as f:
+            files[f"{gov}/handoff-template.md"] = f.read()
     structure = None
     if "structure" in modules:
         desc = {f["name"]: f.get("desc", "") for f in folders}

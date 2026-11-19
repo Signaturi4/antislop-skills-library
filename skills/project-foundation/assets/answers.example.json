@@ -36,6 +36,12 @@
   "decisions": [
     {"decision": "The task board is the home for task status; git is the home for code and docs", "decided_by": "owner", "why": "a status report built from git alone was out of date"}
   ],
-  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task"],
+  "agents": [
+    {"agent": "conductor", "works_for": "owner", "does": "splits a task, writes briefs, checks reports", "level": 2, "stops_for": "merge, deploy, money, publishing"},
+    {"agent": "backend", "works_for": "developer", "does": "builds and fixes server code, opens the change request", "level": 2, "stops_for": "merge to main"},
+    {"agent": "stage", "works_for": "developer", "does": "puts a change on the test stage and runs the checks", "level": 3, "stops_for": "anything on production"},
+    {"agent": "sales", "works_for": "sales", "does": "drafts proposals", "level": 2, "stops_for": "sending"}
+  ],
+  "modules": ["structure", "safe-removal", "docs-toward-root", "file-naming", "task-two-homes", "confirm-outward", "privacy", "skills-per-task", "three-lanes", "real-checkpoints", "spec-first", "one-task-one-change", "authorship", "autonomy-levels"],
   "open_questions": ["Which tool holds prices and invoices?"]
 }
